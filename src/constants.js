@@ -7,3 +7,5 @@ export const STATUS = {
 export const STATUS_ORDER = ['todo', 'doing', 'done']
 
 export const STORAGE_KEY = 'todo.tasks'
+
+export const THEME_KEY = 'todo.theme'

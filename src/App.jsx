@@ -1,9 +1,11 @@
 import { useTodos } from './hooks/useTodos'
+import { useTheme } from './hooks/useTheme'
 import TodoForm from './components/TodoForm'
 import TodoList from './components/TodoList'
 import StatusChart from './components/StatusChart'
 
 export default function App() {
+  const { theme, toggle } = useTheme()
   const {
     tasks,
     addTask,
@@ -16,11 +18,21 @@ export default function App() {
 
   return (
     <div className="app">
-      <header>
-        <h1>Todo + Dashboard</h1>
-        <p className="subtitle">
-          {tasks.length} tarefa(s) &middot; {counts.done} concluída(s)
-        </p>
+      <header className="app-header">
+        <div>
+          <h1>Todo + Dashboard</h1>
+          <p className="subtitle">
+            {tasks.length} tarefa(s) &middot; {counts.done} concluída(s)
+          </p>
+        </div>
+        <button
+          type="button"
+          className="theme-toggle ghost"
+          onClick={toggle}
+          aria-label="Alternar tema"
+        >
+          {theme === 'dark' ? '☀️ Claro' : '🌙 Escuro'}
+        </button>
       </header>
 
       <main className="layout">

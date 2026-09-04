@@ -1,13 +1,27 @@
 :root {
   --bg: #f8fafc;
   --card: #ffffff;
+  --field: #ffffff;
   --border: #e2e8f0;
   --text: #0f172a;
   --muted: #64748b;
   --accent: #2563eb;
 }
 
+:root[data-theme='dark'] {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --field: #1e293b;
+  --border: #334155;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #3b82f6;
+}
+
 * { box-sizing: border-box; }
+
+:root { color-scheme: light; }
+:root[data-theme='dark'] { color-scheme: dark; }
 
 body {
   margin: 0;
@@ -24,6 +38,14 @@ body {
 
 header h1 { margin: 0 0 4px; font-size: 1.6rem; }
 .subtitle { margin: 0; color: var(--muted); }
+
+.app-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.theme-toggle { white-space: nowrap; }
 
 .layout {
   display: grid;
@@ -47,12 +69,18 @@ header h1 { margin: 0 0 4px; font-size: 1.6rem; }
 .card h2 { margin: 0 0 12px; font-size: 1.1rem; }
 
 .todo-form { display: flex; gap: 8px; }
-.todo-form input {
+.todo-form input,
+.search-input {
   flex: 1;
+  width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--border);
   border-radius: 8px;
   font-size: 0.95rem;
+  background: var(--field);
+  color: var(--text);
+  -webkit-appearance: none;
+  appearance: none;
 }
 .todo-form button,
 .filters button,
@@ -65,8 +93,8 @@ header h1 { margin: 0 0 4px; font-size: 1.6rem; }
   cursor: pointer;
   font-size: 0.9rem;
 }
-.filters button, .toolbar button.ghost {
-  background: #fff;
+.filters button, .toolbar button.ghost, .theme-toggle {
+  background: var(--field);
   color: var(--text);
 }
 .filters button.active {
@@ -78,6 +106,10 @@ header h1 { margin: 0 0 4px; font-size: 1.6rem; }
 .toolbar button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+
+.task-search { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+.task-search .filters { margin-bottom: 0; }
+.task-search .ghost { align-self: flex-start; }
 
 .todo-list ul { list-style: none; margin: 0; padding: 0; }
 
@@ -103,12 +135,15 @@ header h1 { margin: 0 0 4px; font-size: 1.6rem; }
   padding: 6px 8px;
   border: 1px solid var(--accent);
   border-radius: 6px;
+  background: var(--field);
+  color: var(--text);
 }
 .todo-item select {
   padding: 6px 8px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  background: #fff;
+  background: var(--field);
+  color: var(--text);
 }
 .todo-item .remove {
   background: transparent;
