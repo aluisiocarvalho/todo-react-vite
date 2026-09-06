@@ -9,6 +9,7 @@ import { filterTasks } from '../lib/filterTasks'
 export function useTaskFilter(tasks) {
   const [query, setQuery] = useState('')
   const [status, setStatus] = useState('all')
+  const [categoryId, setCategoryId] = useState('all')
 
   // Só aceita 'all' ou uma chave válida de STATUS.
   const changeStatus = useCallback((next) => {
@@ -18,14 +19,25 @@ export function useTaskFilter(tasks) {
   const clear = useCallback(() => {
     setQuery('')
     setStatus('all')
+    setCategoryId('all')
   }, [])
 
   const visible = useMemo(
-    () => filterTasks(tasks, { query, status }),
-    [tasks, query, status],
+    () => filterTasks(tasks, { query, status, categoryId }),
+    [tasks, query, status, categoryId],
   )
 
-  const active = query.trim() !== '' || status !== 'all'
+  const active = query.trim() !== '' || status !== 'all' || categoryId !== 'all'
 
-  return { query, setQuery, status, setStatus: changeStatus, clear, visible, active }
+  return {
+    query,
+    setQuery,
+    status,
+    setStatus: changeStatus,
+    categoryId,
+    setCategoryId,
+    clear,
+    visible,
+    active,
+  }
 }

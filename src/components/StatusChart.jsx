@@ -1,16 +1,42 @@
+import { useState } from 'react'
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { getStatusCounts } from '../lib/todoStats'
+import { getStatusCounts, getCategoryCounts } from '../lib/todoStats'
 
-export default function StatusChart({ tasks }) {
-  const data = getStatusCounts(tasks)
+export default function StatusChart({ tasks, categories = [] }) {
+  const [view, setView] = useState('status') // 'status' | 'category'
+
+  const data =
+    view === 'category' ? getCategoryCounts(tasks, categories) : getStatusCounts(tasks)
   const total = data.reduce((sum, d) => sum + d.value, 0)
+  const title = view === 'category' ? 'Tarefas por categoria' : 'Status das tarefas'
 
   return (
     <div className="status-chart card">
-      <h2>Status das tarefas</h2>
+      <h2>{title}</h2>
+
+      <div className="filters chart-toggle">
+        <button
+          type="button"
+          className={view === 'status' ? 'active' : ''}
+          onClick={() => setView('status')}
+        >
+          Status
+        </button>
+        <button
+          type="button"
+          className={view === 'category' ? 'active' : ''}
+          onClick={() => setView('category')}
+        >
+          Categorias
+        </button>
+      </div>
 
       {total === 0 ? (
-        <p className="empty">Nenhuma tarefa ainda. Adicione uma para ver o gráfico.</p>
+        <p className="empty">
+          {view === 'category'
+            ? 'Nenhuma tarefa categorizada ainda.'
+            : 'Nenhuma tarefa ainda. Adicione uma para ver o gráfico.'}
+        </p>
       ) : (
         <div style={{ width: '100%', height: 260 }}>
           <ResponsiveContainer>

@@ -9,8 +9,11 @@ const STATUS_FILTERS = [
 export default function TaskSearch({
   query,
   status,
+  categories = [],
+  categoryId = 'all',
   onQueryChange,
   onStatusChange,
+  onCategoryChange,
   onClear,
   active,
 }) {
@@ -24,6 +27,22 @@ export default function TaskSearch({
         onChange={(e) => onQueryChange(e.target.value)}
         aria-label="Buscar tarefa"
       />
+
+      {categories.length > 0 && (
+        <select
+          className="category-filter"
+          value={categoryId}
+          onChange={(e) => onCategoryChange(e.target.value)}
+          aria-label="Filtrar por categoria"
+        >
+          <option value="all">Todas as categorias</option>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      )}
 
       <div className="filters">
         {STATUS_FILTERS.map((f) => (

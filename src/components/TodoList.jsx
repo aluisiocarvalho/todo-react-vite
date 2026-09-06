@@ -3,8 +3,18 @@ import TodoItem from './TodoItem'
 import TaskSearch from './TaskSearch'
 import { useTaskFilter } from '../hooks/useTaskFilter'
 
-export default function TodoList({ tasks, onSetStatus, onRemove, onEditTitle, onReorder }) {
-  const { query, setQuery, status, setStatus, clear, visible, active } = useTaskFilter(tasks)
+export default function TodoList({
+  tasks,
+  categories,
+  onSetStatus,
+  onRemove,
+  onEditTitle,
+  onReorder,
+  onToggleCategory,
+  onSetCategories,
+}) {
+  const { query, setQuery, status, setStatus, categoryId, setCategoryId, clear, visible, active } =
+    useTaskFilter(tasks)
   const [dragId, setDragId] = useState(null)
 
   // Só reordena com a lista completa à vista (sem busca/filtro ativos).
@@ -19,8 +29,11 @@ export default function TodoList({ tasks, onSetStatus, onRemove, onEditTitle, on
       <TaskSearch
         query={query}
         status={status}
+        categories={categories}
+        categoryId={categoryId}
         onQueryChange={setQuery}
         onStatusChange={setStatus}
+        onCategoryChange={setCategoryId}
         onClear={clear}
         active={active}
       />
@@ -35,9 +48,12 @@ export default function TodoList({ tasks, onSetStatus, onRemove, onEditTitle, on
             <TodoItem
               key={task.id}
               task={task}
+              categories={categories}
               onSetStatus={onSetStatus}
               onRemove={onRemove}
               onEditTitle={onEditTitle}
+              onToggleCategory={onToggleCategory}
+              onSetCategories={onSetCategories}
               canReorder={canReorder}
               dragging={dragId === task.id}
               onDragStart={() => setDragId(task.id)}

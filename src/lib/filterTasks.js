@@ -4,6 +4,7 @@ import { STATUS } from '../constants'
  * @typedef {Object} TaskFilter
  * @property {string} [query] Texto buscado no título (case-insensitive).
  * @property {string} [status] Chave de STATUS ou 'all'.
+ * @property {string} [categoryId] Id de categoria ou 'all'.
  */
 
 // Normaliza texto para busca (minúsculo e sem espaços nas pontas).
@@ -20,9 +21,11 @@ function norm(value) {
 export function filterTasks(tasks, filter = {}) {
   const query = norm(filter.query)
   const status = filter.status && STATUS[filter.status] ? filter.status : 'all'
+  const categoryId = filter.categoryId && filter.categoryId !== 'all' ? filter.categoryId : 'all'
 
   return (tasks ?? []).filter((task) => {
     if (status !== 'all' && task.status !== status) return false
+    if (categoryId !== 'all' && !(task.categoryIds ?? []).includes(categoryId)) return false
     if (query && !norm(task.title).includes(query)) return false
     return true
   })

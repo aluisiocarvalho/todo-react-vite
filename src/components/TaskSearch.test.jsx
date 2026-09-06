@@ -7,18 +7,22 @@ function setup(props = {}) {
   const onQueryChange = vi.fn()
   const onStatusChange = vi.fn()
   const onClear = vi.fn()
+  const onCategoryChange = vi.fn()
   render(
     <TaskSearch
       query=""
       status="all"
+      categories={[]}
+      categoryId="all"
       onQueryChange={onQueryChange}
       onStatusChange={onStatusChange}
+      onCategoryChange={onCategoryChange}
       onClear={onClear}
       active={false}
       {...props}
     />,
   )
-  return { onQueryChange, onStatusChange, onClear }
+  return { onQueryChange, onStatusChange, onClear, onCategoryChange }
 }
 
 describe('TaskSearch', () => {
@@ -49,5 +53,20 @@ describe('TaskSearch', () => {
   it('esconde "Limpar busca" sem filtro ativo', () => {
     setup({ active: false })
     expect(screen.queryByRole('button', { name: 'Limpar busca' })).not.toBeInTheDocument()
+  })
+
+  it('mostra o filtro de categoria e dispara onCategoryChange', async () => {
+    const user = userEvent.setup()
+    const { onCategoryChange } = setup({
+      categories: [{ id: 'c1', name: 'Trabalho', color: '#000' }],
+    })
+    const select = screen.getByLabelText('Filtrar por categoria')
+    await user.selectOptions(select, 'c1')
+    expect(onCategoryChange).toHaveBeenCalledWith('c1')
+  })
+
+  it('esconde o filtro de categoria quando não há categorias', () => {
+    setup({ categories: [] })
+    expect(screen.queryByLabelText('Filtrar por categoria')).not.toBeInTheDocument()
   })
 })
