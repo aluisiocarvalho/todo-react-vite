@@ -18,6 +18,7 @@ export default function StatusChart({ tasks, categories = [] }) {
         <button
           type="button"
           className={view === 'status' ? 'active' : ''}
+          aria-pressed={view === 'status'}
           onClick={() => setView('status')}
         >
           Status
@@ -25,6 +26,7 @@ export default function StatusChart({ tasks, categories = [] }) {
         <button
           type="button"
           className={view === 'category' ? 'active' : ''}
+          aria-pressed={view === 'category'}
           onClick={() => setView('category')}
         >
           Categorias

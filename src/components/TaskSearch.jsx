@@ -50,6 +50,7 @@ export default function TaskSearch({
             key={f.key}
             type="button"
             className={status === f.key ? 'active' : ''}
+            aria-pressed={status === f.key}
             onClick={() => onStatusChange(f.key)}
           >
             {f.label}
