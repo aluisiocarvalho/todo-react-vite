@@ -1,7 +1,17 @@
 import { useState } from 'react'
 import { STATUS, STATUS_ORDER } from '../constants'
 
-export default function TodoItem({ task, onSetStatus, onRemove, onEditTitle }) {
+export default function TodoItem({
+  task,
+  onSetStatus,
+  onRemove,
+  onEditTitle,
+  canReorder = false,
+  dragging = false,
+  onDragStart,
+  onDragEnter,
+  onDragEnd,
+}) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(task.title)
 
@@ -12,7 +22,19 @@ export default function TodoItem({ task, onSetStatus, onRemove, onEditTitle }) {
   }
 
   return (
-    <li className={`todo-item status-${task.status}`}>
+    <li
+      className={`todo-item status-${task.status} ${dragging ? 'dragging' : ''}`}
+      draggable={canReorder && !editing}
+      onDragStart={onDragStart}
+      onDragEnter={onDragEnter}
+      onDragOver={(e) => canReorder && e.preventDefault()}
+      onDragEnd={onDragEnd}
+    >
+      {canReorder && (
+        <span className="drag-handle" aria-hidden="true" title="Arraste para reordenar">
+          ⠿
+        </span>
+      )}
       <span className="dot" style={{ background: STATUS[task.status].color }} />
 
       {editing ? (

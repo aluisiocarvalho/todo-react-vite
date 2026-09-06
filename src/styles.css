@@ -128,6 +128,16 @@ header h1 { margin: 0 0 4px; font-size: 1.6rem; }
   flex-shrink: 0;
   display: inline-block;
 }
+.todo-item.dragging { opacity: 0.4; }
+.todo-item .drag-handle {
+  cursor: grab;
+  color: var(--muted);
+  user-select: none;
+  font-size: 1rem;
+  line-height: 1;
+}
+.todo-item .drag-handle:active { cursor: grabbing; }
+
 .todo-item .title { flex: 1; cursor: text; }
 .todo-item .title.done { text-decoration: line-through; color: var(--muted); }
 .todo-item .edit-input {

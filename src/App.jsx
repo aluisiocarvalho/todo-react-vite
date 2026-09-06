@@ -13,6 +13,7 @@ export default function App() {
     editTitle,
     setStatus,
     clearCompleted,
+    reorderTasks,
     counts,
   } = useTodos()
 
@@ -52,6 +53,7 @@ export default function App() {
             onSetStatus={setStatus}
             onRemove={removeTask}
             onEditTitle={editTitle}
+            onReorder={reorderTasks}
           />
         </section>
 

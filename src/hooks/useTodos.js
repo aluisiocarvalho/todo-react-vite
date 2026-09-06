@@ -43,11 +43,25 @@ export function useTodos() {
     setTasks((prev) => prev.filter((t) => t.status !== 'done'))
   }, [setTasks])
 
+  // Move a tarefa `fromId` para a posição de `toId` (ordem persiste no localStorage).
+  const reorderTasks = useCallback((fromId, toId) => {
+    if (fromId === toId) return
+    setTasks((prev) => {
+      const from = prev.findIndex((t) => t.id === fromId)
+      const to = prev.findIndex((t) => t.id === toId)
+      if (from === -1 || to === -1) return prev
+      const next = [...prev]
+      const [moved] = next.splice(from, 1)
+      next.splice(to, 0, moved)
+      return next
+    })
+  }, [setTasks])
+
   const counts = useMemo(() => {
     const base = { todo: 0, doing: 0, done: 0 }
     for (const t of tasks) base[t.status] = (base[t.status] ?? 0) + 1
     return base
   }, [tasks])
 
-  return { tasks, addTask, removeTask, editTitle, setStatus, clearCompleted, counts }
+  return { tasks, addTask, removeTask, editTitle, setStatus, clearCompleted, reorderTasks, counts }
 }
